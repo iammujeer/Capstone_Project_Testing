@@ -3,7 +3,7 @@ import inspect
 import pandas as pd
 import pytest
 from sqlalchemy import create_engine
-from common_utilities.utilities import verify_expected_as_file_with_database, verify_expected_as_source_database_with_target_database
+from common_utilities.utilities import compare_source_and_target_data
 import logging
 #Logging Config
 
@@ -27,11 +27,15 @@ class TestDataExtraction:
             logger.info(f"Test case {test_case_name} execution has started")
             actual_query = "SELECT * FROM stage_supplier"
 
-            verify_expected_as_file_with_database(
+            compare_source_and_target_data(
+                "SOURCE FILE",
                 "test_data/supplier_data.json",
                 "json",
-                connect_to_mysqldb,
+                None,
+                None,
+                "TARGET DB",
                 actual_query,
+                connect_to_mysqldb,
                 test_case_name
             )
         except Exception as e:
@@ -45,11 +49,15 @@ class TestDataExtraction:
             logger.info(f"Test case {test_case_name} execution has started")
             actual_query = "SELECT * FROM stage_inventory"
 
-            verify_expected_as_file_with_database(
+            compare_source_and_target_data(
+                "SOURCE FILE",
                 "test_data/inventory_data.xml",
                 "xml",
-                connect_to_mysqldb,
+                None,
+                None,
+                "TARGET DB",
                 actual_query,
+                connect_to_mysqldb,
                 test_case_name
             )
         except Exception as e:
@@ -63,11 +71,15 @@ class TestDataExtraction:
             logger.info(f"Test case {test_case_name} execution has started")
             actual_query = "SELECT * FROM stage_product"
 
-            verify_expected_as_file_with_database(
+            compare_source_and_target_data(
+                "SOURCE FILE",
                 "test_data/product_data.csv",
                 "csv",
-                connect_to_mysqldb,
+                None,
+                None,
+                "TARGET DB",
                 actual_query,
+                connect_to_mysqldb,
                 test_case_name
             )
         except Exception as e:
@@ -81,11 +93,15 @@ class TestDataExtraction:
             logger.info(f"Test case {test_case_name} execution has started")
             actual_query = "SELECT * FROM stage_sales"
 
-            verify_expected_as_file_with_database(
+            compare_source_and_target_data(
+                "SOURCE FILE",
                 "test_data/sales_data.csv",
                 "csv",
-                connect_to_mysqldb,
+                None,
+                None,
+                "TARGET DB",
                 actual_query,
+                connect_to_mysqldb,
                 test_case_name
             )
         except Exception as e:
@@ -99,9 +115,13 @@ class TestDataExtraction:
             logger.info(f"Test case {test_case_name} execution has started")
             source_query = "SELECT * FROM stores"
             target_query = "SELECT * FROM stage_stores"
-            verify_expected_as_source_database_with_target_database(
+            compare_source_and_target_data(
+                "SOURCE DB",
+                None,
+                None,
                 source_query,
                 connect_to_oracledb,
+                "TARGET DB",
                 target_query,
                 connect_to_mysqldb,
                 test_case_name
